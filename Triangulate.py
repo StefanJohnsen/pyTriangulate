@@ -12,7 +12,6 @@
 # This software is released under the MIT License.
 
 import math
-import numpy as np
 from enum import Enum
 
 epsilon = 1e-6
