@@ -5,7 +5,7 @@ This algorithm can triangulate both convex and concave 3D polygons that lie in t
 
 Triangulation of a polygon is the process of dividing a polygon into a series of triangles.
 
-### Example Convex polygon
+# Example Convex polygon
 
 A convex polygon is a polygon with the following characteristics:
 - All interior angles are less than 180 degrees.
@@ -15,8 +15,6 @@ A convex polygon is a polygon with the following characteristics:
 
 ```
 import Triangulate
-
-Point = Triangulate.Point
 
 polygon = [
     Triangulate.Point(0.5, 0.866, 0.0),     #  1 o'clock
@@ -40,7 +38,7 @@ triangles, normal = Triangulate.triangulate(polygon)
 
 ![Clock](https://github.com/StefanJohnsen/pyTriangulate/blob/main/Pictures/triangulate-convex.jpg)
 
-When the polygon above is triangulated, the first step is to determine the type of polygon. If the polygon is convex, the routine will use the fan algorithm for triangulation.
+When triangulating the polygon, the initial step involves identifying the polygon's nature. If the polygon proves to be convex, the routine will proceed with triangulation using the fan algorithm.
 
 The fan algorithm is a common and efficient method for triangulating convex polygons.
 
@@ -50,12 +48,37 @@ The fan algorithm is a common and efficient method for triangulating convex poly
 
 In conclusion, the fan algorithm is a reliable and fast method for triangulating convex polygons.
 
-### Example Concave polygon
+# Example Concave polygon
 
 A concave polygon is a polygon with the following characteristics:
 - At least one of its interior angles measures more than 180 degrees. This means that there is at least one corner (vertex) in the polygon where the shape appears to bend inwards or "fold" in a way that creates an angle greater than 180 degrees.
 - Unlike convex polygons, in a concave polygon, you can draw a line segment between two points inside the polygon that may extend outside the boundaries of the polygon. This happens because of the "inward" or "folded" angles within the polygon.
 
-![convex](https://github.com/StefanJohnsen/pyTriangulate/blob/main/Pictures/convex.jpg)
+![convex](https://github.com/StefanJohnsen/pyTriangulate/blob/main/Pictures/concave.jpg)
 
+```
+import Triangulate
 
+polygon = [
+    Triangulate.Point(0.5, 0.866, 0.0),     #  1 o'clock
+    Triangulate.Point(0.866, 0.5, 0.0),     #  2 o'clock
+    Triangulate.Point(0.0, 1.0, 0.0)        #  center clock
+    Triangulate.Point(0.866, -0.5, 0.0),    #  4 o'clock
+    Triangulate.Point(0.5, -0.866, 0.0),    #  5 o'clock
+    Triangulate.Point(0.0, -1.0, 0.0),      #  6 o'clock
+    Triangulate.Point(-0.5, -0.866, 0.0),   #  7 o'clock
+    Triangulate.Point(-0.866, -0.5, 0.0),   #  8 o'clock
+    Triangulate.Point(-1.0, 0.0, 0.0),      #  9 o'clock
+    Triangulate.Point(-0.866, 0.5, 0.0),    # 10 o'clock
+    Triangulate.Point(-0.5, 0.866, 0.0),    # 11 o'clock
+    Triangulate.Point(0.0, 1.0, 0.0)        # 12 o'clock
+]
+
+# Convert polygon to triangles
+triangles, normal = Triangulate.triangulate(polygon)
+
+```
+
+![Clock](https://github.com/StefanJohnsen/pyTriangulate/blob/main/Pictures/triangulate-concave.jpg)
+
+If the polygon proves to be concave, the routine will proceed with triangulation using the fan algorithm.
