@@ -5,7 +5,7 @@ This algorithm can triangulate both convex and concave 3D polygons that lie in t
 
 Triangulation of a polygon is the process of dividing a polygon into a series of triangles.
 
-### Example Convex polygon
+# Example Convex polygon
 
 A convex polygon is a polygon with the following characteristics:
 - All interior angles are less than 180 degrees.
@@ -48,7 +48,7 @@ The fan algorithm is a common and efficient method for triangulating convex poly
 
 In conclusion, the fan algorithm is a reliable and fast method for triangulating convex polygons.
 
-### Example Concave polygon
+# Example Concave polygon
 
 A concave polygon is a polygon with the following characteristics:
 - At least one of its interior angles measures more than 180 degrees. This means that there is at least one corner (vertex) in the polygon where the shape appears to bend inwards or "fold" in a way that creates an angle greater than 180 degrees.
