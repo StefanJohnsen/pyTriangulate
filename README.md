@@ -5,6 +5,9 @@ This algorithm can triangulate both convex and concave 3D polygons that lie in t
 
 Triangulation of a polygon is the process of dividing a polygon into a series of triangles.
 
+### Triangulate a obj file
+pyTriangulate have been integrated into the [pyOBJTriangulate](https://github.com/StefanJohnsen/pyOBJTriangulate), showcasing the triangulation capabilities.
+
 # Example Convex polygon
 
 A convex polygon is a polygon with the following characteristics:
