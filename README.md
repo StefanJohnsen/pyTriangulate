@@ -39,14 +39,7 @@ triangles, normal = Triangulate.triangulate(polygon)
 ![Clock](https://github.com/StefanJohnsen/pyTriangulate/blob/main/Pictures/triangulate-convex.jpg)
 
 When triangulating the polygon, the initial step involves identifying the polygon's nature. If the polygon proves to be convex, the routine will proceed with triangulation using the fan algorithm.
-
 The fan algorithm is a common and efficient method for triangulating convex polygons.
-
-- Convexity Requirement: The algorithm relies on the fact that all interior angles of the polygon are less than 180 degrees.
-- Efficiency: The algorithm has a time complexity of O(n), where n is the number of vertices in the polygon.
-- Vertex Order: The algorithm assumes that the vertices of the convex polygon are provided in a specific order, such as clockwise or counterclockwise.
-
-In conclusion, the fan algorithm is a reliable and fast method for triangulating convex polygons.
 
 # Example Concave polygon
 
@@ -81,4 +74,6 @@ triangles, normal = Triangulate.triangulate(polygon)
 
 ![Clock](https://github.com/StefanJohnsen/pyTriangulate/blob/main/Pictures/triangulate-concave.jpg)
 
-If the polygon proves to be concave, the routine will proceed with triangulation using the fan algorithm.
+If the polygon proves to be concave, the routine will proceed with triangulation using the ear-clipping algorithm.
+
+
