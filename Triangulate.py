@@ -121,9 +121,13 @@ def normal(polygon):
 
     return normalize(v)
 
-def getBarycentricTriangleCoordinates(a, b, c, p):
-    alpha = beta = gamma = -2.0 * epsilon
+def pointInsideOrEdgeTriangle(a, b, c, p):
+    zero = 1e-15  # A small value close to zero for comparisons
 
+    # Initialize edge to False
+    edge = False
+
+    # Vectors from point p to vertices of the triangle
     v0 = c - a
     v1 = b - a
     v2 = p - a
@@ -134,20 +138,25 @@ def getBarycentricTriangleCoordinates(a, b, c, p):
     dot11 = dot(v1, v1)
     dot12 = dot(v1, v2)
 
+    # Check for degenerate triangle
     denom = dot00 * dot11 - dot01 * dot01
 
-    if abs(denom) < epsilon:
-        return alpha, beta, gamma
+    if abs(denom) < zero:
+        # The triangle is degenerate (i.e., has no area)
+        return (False, edge)
 
-    alpha = (dot11 * dot02 - dot01 * dot12) / denom
-    beta = (dot00 * dot12 - dot01 * dot02) / denom
-    gamma = 1.0 - alpha - beta
+    # Compute barycentric coordinates
+    invDenom = 1.0 / denom
 
-    return alpha, beta, gamma
+    u = (dot11 * dot02 - dot01 * dot12) * invDenom
+    v = (dot00 * dot12 - dot01 * dot02) * invDenom
 
-def pointInsideOrEdgeTriangle(a, b, c, p):
-    alpha, beta, gamma = getBarycentricTriangleCoordinates(a, b, c, p)
-    return alpha >= -epsilon and beta >= -epsilon and gamma >= -epsilon
+    # Check for edge condition
+    if abs(u) < zero or abs(v) < zero or abs(u + v - 1) < zero:
+        edge = True
+
+    # Check if point is inside the triangle (including edges)
+    return (u >= 0.0 and v >= 0.0 and u + v < 1.0, edge)
 
 def isEar(index, polygon, normal):
     n = len(polygon)
@@ -173,8 +182,10 @@ def isEar(index, polygon, normal):
             continue
 
         p = polygon[i]
-        if pointInsideOrEdgeTriangle(prev, item, next, p):
-            return False
+        
+        inside, _ = pointInsideOrEdgeTriangle(prev, item, next, p)
+        
+        if inside: return False
 
     return True
 
@@ -201,6 +212,29 @@ def getBiggestEar(polygon, normal):
 
     return maxIndex
 
+def getOverlappingEar(polygon, normal):
+    n = len(polygon)
+
+    if n == 3: return 0
+    if n == 0: return -1
+
+    for index in range(n):
+        prev = polygon[(index - 1 + n) % n]
+        item = polygon[index % n]
+        next = polygon[(index + 1) % n]
+
+        u = normalize(item - prev)
+
+        if turn(prev, u, normal, next) != TurnDirection.NoTurn:
+            continue
+        
+        v = normalize(next - item)
+
+        if dot(u, v) < 0.0: 
+            return index
+
+    return -1
+
 def convex(polygon, normal):
     n = len(polygon)
 
@@ -215,6 +249,7 @@ def convex(polygon, normal):
         next = polygon[(index + 1) % n]
 
         u = normalize(item - prev)
+        
         item_turn = turn(prev, u, normal, next)
 
         if item_turn == TurnDirection.NoTurn:
@@ -269,6 +304,9 @@ def cutTriangulation(polygon, normal):
 
     while polygon:
         index = getBiggestEar(polygon, normal)
+        
+        if index == -1:
+            index = getOverlappingEar(polygon, normal)
 
         if index == -1: return []
 
