@@ -330,7 +330,7 @@ def removeConsecutiveEqualPoints(polygon):
     for index in range(n):
         item = polygon[index % n]
         next = polygon[(index + 1) % n]
-        if item.i == next.i: continue
+        if item == next: continue
         uniquePolygon.append(item)
     return uniquePolygon
 
